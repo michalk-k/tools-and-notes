@@ -1,0 +1,6 @@
+-- Get records from Home Assistant statistics
+SELECT state, statistic_id AS entity_id, unit_of_measurement, datetime(start_ts, 'unixepoch') || ' GMT'
+FROM statistics as st
+JOIN statistics_meta as sm ON sm.id= st.metadata_id AND sm.statistic_id IN ('sensor.pg_mainhouse_total_energy_energy_hourly', 'sensor.pg_cube_total_energy_energy_hourly')
+WHERE st.start_ts BETWEEN unixepoch('2025-08-21 06:00+02:00') AND unixepoch('2025-08-21 14:00+02:00')
+ORDER BY st.id DESC
