@@ -25,4 +25,5 @@ ORDER BY st.state_id
 -- output to the sceen
 sqlite3 -header -csv ./home-assistant_v2.db  < fetch_entities.sql    
 
+-- copy data directly from sqlite to pg
 sqlite3 -header -csv ./home-assistant_v2.db < fetch_entities.sql | docker exec -i addon_77b2833f_timescaledb psql -U postgres -d ha_timescale -c "COPY import_from_ha FROM STDIN WITH CSV HEADER"
