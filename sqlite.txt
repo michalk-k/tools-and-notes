@@ -21,3 +21,8 @@ JOIN states_meta as sm ON sm.metadata_id= st.metadata_id AND sm.entity_id IN ('s
 JOIN state_attributes AS sa ON sa.attributes_id = st.attributes_id 
 WHERE st.last_reported_ts > unixepoch('2025-08-24 13:41:08.395291+02:00')
 ORDER BY st.state_id 
+
+-- output to the sceen
+sqlite3 -header -csv ./home-assistant_v2.db  < fetch_entities.sql    
+
+sqlite3 -header -csv ./home-assistant_v2.db < fetch_entities.sql | docker exec -i addon_77b2833f_timescaledb psql -U postgres -d ha_timescale -c "COPY import_from_ha FROM STDIN WITH CSV HEADER"
