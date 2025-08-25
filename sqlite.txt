@@ -6,7 +6,7 @@ WHERE st.start_ts BETWEEN unixepoch('2025-08-21 06:00+02:00') AND unixepoch('202
 ORDER BY st.id DESC
 
 -- get values of entities from Home Assistant
--- Warning: datetime() with 'subsec' loses microseconds precision
+-- Warning: datetime() with 'subsec' crops fractions to ms (microseconds are lost)
 SELECT datetime(last_reported_ts, 'unixepoch', 'subsec') || ' GMT', sm.entity_id, state,  shared_attrs
 FROM states AS st
 JOIN states_meta as sm ON sm.metadata_id= st.metadata_id AND sm.entity_id IN ('sensor.pg_mainhouse_total_energy_energy_hourly', 'sensor.pg_cube_total_energy_energy_hourly')
